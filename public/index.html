@@ -1526,8 +1526,8 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stro
         <span class="material-symbols-outlined text-[17px] text-[#088395]">bookmark_check</span>
         <span class="hidden lg:inline">Save Draft</span>
       </button>
-      <button onclick="submitStudioOrder()" class="px-4 py-2 rounded-xl bg-[#088395] hover:bg-[#066c7b] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+      <button onclick="lockSpecsAndOrder()" id="btnLockSpecsHeader" class="px-4 py-2 rounded-xl bg-[#088395] hover:bg-[#066c7b] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[18px]">lock_clock</span>
         <span>Lock Specs &amp; Order</span>
       </button>
     </div>
@@ -1878,9 +1878,9 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stro
           <span class="text-[10px] font-mono uppercase font-bold text-[#6B675E] block">Sublimated Unit Price</span>
           <span id="lblStudioUnitPrice" class="font-headline-sm text-lg text-[#111417] font-bold">$54.00 <small class="text-xs font-normal text-[#6B675E]">/ pc</small></span>
         </div>
-        <button onclick="openOrderFileReviewModal()" class="px-5 py-2.5 rounded-xl bg-[#088395] text-white text-xs uppercase font-bold hover:bg-[#066c7b] transition-all shadow-md flex items-center gap-1.5 group">
+        <button onclick="lockSpecsAndOrder()" id="btnLockSpecsAndOrder" class="px-5 py-2.5 rounded-xl bg-[#088395] text-white text-xs uppercase font-bold hover:bg-[#066c7b] transition-all shadow-md flex items-center gap-1.5 group">
           <span class="material-symbols-outlined text-[16px]">lock_clock</span>
-          <span>Lock &amp; Specs</span>
+          <span>Lock Specs &amp; Order</span>
         </button>
       </div>
     </aside>
@@ -1903,6 +1903,10 @@ svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stro
           <div class="flex items-center gap-2">
             <h3 class="font-headline-sm text-base sm:text-lg font-bold uppercase tracking-tight text-white">Order File Review &amp; Specifications</h3>
             <span class="px-2 py-0.5 rounded bg-[#088395] text-white font-mono text-[10px] uppercase font-bold">FR-5 Spec</span>
+            <a href="/order-file" class="ml-2 px-2.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white font-mono text-[10px] uppercase font-bold flex items-center gap-1 transition-all">
+              <span>Open Standalone Page</span>
+              <span class="material-symbols-outlined text-[12px]">open_in_new</span>
+            </a>
           </div>
           <p class="text-xs text-white/70 mt-0.5">Review all customized designs, vector attachments, CorelDraw markups, and cart products before locking your ZAM-ID.</p>
         </div>
@@ -4506,6 +4510,32 @@ function saveStudioDraft() {
 /* =========================================================================
    ZAMFORWARD ORDER FILE REVIEW & CONFIRMATION ENGINE (FR-5 / FR-6)
    ========================================================================= */
+
+function lockSpecsAndOrder() {
+  const patternCanvas = document.getElementById('studio2DCanvas');
+  let snapshot = '';
+  if (patternCanvas) {
+    try {
+      snapshot = patternCanvas.toDataURL('image/jpeg', 0.85);
+    } catch (e) {
+      console.warn('Canvas snapshot export:', e);
+    }
+  }
+
+  const orderFilePayload = {
+    ...studioState,
+    snapshotData: snapshot,
+    timestamp: Date.now()
+  };
+
+  try {
+    localStorage.setItem('zam_order_file_state', JSON.stringify(orderFilePayload));
+  } catch (e) {
+    console.warn('LocalStorage error:', e);
+  }
+
+  window.location.href = '/order-file';
+}
 
 function openOrderFileReviewModal() {
   const isShorts = studioState.garmentType === 'shorts';

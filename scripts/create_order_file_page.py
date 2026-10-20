@@ -1,0 +1,645 @@
+import sys, io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+html_content = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZamForward — Order File Preparation (FR-5)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#F4F1EA',
+            card: '#FFFFFF',
+            recess: '#EDE8DE',
+            border: '#DFD9CC',
+            ink: '#111417',
+            cyan: { DEFAULT: '#088395', dark: '#066c7b', soft: '#DDF3F6' },
+            gold: '#C9A86A'
+          },
+          fontFamily: {
+            head: ['Space Grotesk', 'system-ui', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --canvas: #F4F1EA; --card: #FFFFFF; --recess: #EDE8DE; --border: #DFD9CC;
+      --ink: #111417; --cyan: #088395; --gold: #C9A86A;
+      --head: 'Space Grotesk', system-ui, sans-serif;
+      --body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    body { background-color: var(--canvas); font-family: var(--body); color: var(--ink); }
+    .logo-badge {
+      height: 48px; width: auto; border-radius: 10px; object-fit: contain;
+      background: #ffffff; border: 1.5px solid #DFD9CC; padding: 3px 8px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#088395] selection:text-white">
+
+  <!-- Top Sticky Navigation Rail -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#DFD9CC] shadow-sm">
+    <div class="max-w-[1360px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Page Breadcrumbs -->
+      <div class="flex items-center gap-4">
+        <a href="/" aria-label="ZamForward Home" class="flex-shrink-0">
+          <img src="/images/logo.png" alt="ZamForward Combat Apparel" class="logo-badge" />
+        </a>
+        <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-mono text-xs uppercase tracking-widest text-[#088395] font-bold">FR-5 Specification</span>
+            <span class="text-xs text-slate-400">•</span>
+            <span class="text-xs font-semibold text-slate-500">Order File Preparation</span>
+          </div>
+          <h1 class="font-head text-base sm:text-lg font-bold text-[#111417] uppercase tracking-tight">Order File Review &amp; Specifications</h1>
+        </div>
+      </div>
+
+      <!-- Reserved ZAM Order ID & Back Button -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex flex-col items-end">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold">Pre-Allocated Order ID</span>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#088395] animate-ping"></span>
+            <span id="headerZamId" class="font-mono text-sm sm:text-base font-bold text-[#088395] tracking-wider">ZAM-415-26</span>
+          </div>
+        </div>
+
+        <a href="/" onclick="window.history.back(); return false;" class="px-4 py-2 rounded-xl border border-[#DFD9CC] bg-[#F4F1EA] hover:bg-[#EDE8DE] text-xs font-bold uppercase transition-colors flex items-center gap-1.5 text-[#111417]">
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+          <span class="hidden sm:inline">Back to Studio</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-[1360px] mx-auto px-4 sm:px-8 py-8 w-full flex-1">
+    
+    <!-- Top Notice Banner -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#DFD9CC] shadow-sm mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-start gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-[#088395] text-white flex items-center justify-center flex-shrink-0 shadow-md">
+          <span class="material-symbols-outlined text-[24px]">verified</span>
+        </div>
+        <div>
+          <h2 class="font-head text-base sm:text-lg font-bold text-[#111417] uppercase">Direct Atelier Order File Review</h2>
+          <p class="text-xs sm:text-sm text-[#6B675E] max-w-2xl mt-0.5">
+            Confirming this page bundles all custom 3D patterns, vector attachments, CorelDraw templates, and cart items into an official <strong>ZAM Order File</strong>. <strong>No payment is taken now</strong>; our staff will review your vector files and issue your 50% milestone invoice.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 self-start sm:self-auto bg-[#EDE8DE] px-3 py-1.5 rounded-xl border border-[#DFD9CC]">
+        <span class="text-xs font-bold text-[#111417]">Order Status:</span>
+        <span class="px-2 py-0.5 rounded bg-[#088395] text-white font-mono text-[11px] font-bold uppercase">Preparing File</span>
+      </div>
+    </div>
+
+    <!-- 2-Column Order File Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Custom Design, Attachments, and Cart Products (7 Columns) -->
+      <div class="lg:col-span-7 space-y-6">
+
+        <!-- 1. CUSTOM 3D DESIGNED GARMENT SPECIFICATION -->
+        <div class="bg-white rounded-2xl border border-[#DFD9CC] p-5 sm:p-6 shadow-sm space-y-5">
+          <div class="flex items-center justify-between pb-3.5 border-b border-[#DFD9CC]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-[#088395] text-white flex items-center justify-center text-xs font-bold">01</span>
+              <h3 class="font-head text-base sm:text-lg font-bold uppercase text-[#111417]">Custom 3D Designed Garment File</h3>
+            </div>
+            <span class="px-2.5 py-1 rounded-full bg-[#DDF3F6] text-[#066c7b] font-mono text-[11px] font-bold uppercase">Specs Locked</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+            <!-- 3D Pattern / Mockup Snapshot -->
+            <div class="sm:col-span-5 bg-slate-50 rounded-xl p-3 border border-slate-200 flex items-center justify-center min-h-[180px] relative overflow-hidden group">
+              <img id="patternSnapshotImg" src="/images/home-page.jpg" alt="Custom Design Snapshot" class="max-h-44 w-auto object-contain rounded drop-shadow"/>
+              <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/75 text-white font-mono text-[9px] uppercase tracking-wider">3D Unwrapped UV</span>
+            </div>
+
+            <!-- Technical Specifications -->
+            <div class="sm:col-span-7 space-y-3">
+              <div>
+                <h4 id="garmentTitleDisplay" class="font-head text-base font-bold text-[#111417] uppercase">Apex Long-Sleeve Sublimation Rashguard (LS)</h4>
+                <p class="text-xs text-[#6B675E] mt-0.5">450 GSM Poly-Spandex • Anti-slip silicone waist • Flatlock 6-needle seam</p>
+              </div>
+
+              <!-- Color Palette Specs -->
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200">
+                  <span class="text-[#6B675E]">Torso:</span>
+                  <span id="fabricColorSwatch" class="w-3.5 h-3.5 rounded-full border border-slate-400 bg-[#111417]"></span>
+                  <strong id="fabricColorText" class="font-mono">#111417</strong>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200">
+                  <span class="text-[#6B675E]">Sleeves:</span>
+                  <span id="sleeveColorSwatch" class="w-3.5 h-3.5 rounded-full border border-slate-400 bg-[#088395]"></span>
+                  <strong id="sleeveColorText" class="font-mono">#088395</strong>
+                </div>
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200">
+                  <span class="text-[#6B675E]">Seam:</span>
+                  <span id="stitchColorSwatch" class="w-3.5 h-3.5 rounded-full border border-slate-400 bg-[#C9A86A]"></span>
+                  <strong id="stitchColorText" class="font-mono">#C9A86A</strong>
+                </div>
+              </div>
+
+              <!-- Master CorelDraw Template Link -->
+              <div class="flex items-center gap-2 p-2.5 rounded-lg bg-[#F4F1EA] border border-[#DFD9CC] text-xs">
+                <span class="material-symbols-outlined text-[#088395] text-[18px]">attachment</span>
+                <span class="text-[#6B675E]">Master Vector Cut:</span>
+                <strong class="font-mono text-[#111417]">Backup_of_ZAM_FORWARD_123456.cdr</strong>
+                <a href="/uploads/templates/Backup_of_ZAM_FORWARD_123456.cdr" download class="ml-auto text-[11px] font-bold text-[#088395] hover:underline flex items-center gap-0.5">
+                  <span>Download</span>
+                  <span class="material-symbols-outlined text-[14px]">download</span>
+                </a>
+              </div>
+
+              <!-- Custom Size Breakdown -->
+              <div class="pt-2 border-t border-slate-200">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="font-bold text-[#111417] uppercase">Custom Size Breakdown:</span>
+                  <span class="font-mono text-[#088395] font-bold">Total: <span id="customTotalPieces">15</span> pcs</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2 text-center text-xs">
+                  <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                    <span class="block text-[10px] text-slate-500 font-bold">S</span>
+                    <input type="number" min="0" value="2" id="inputS" onchange="recalculateTotals()" class="w-full text-center font-bold bg-white border border-slate-300 rounded py-0.5 mt-1"/>
+                  </div>
+                  <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                    <span class="block text-[10px] text-slate-500 font-bold">M</span>
+                    <input type="number" min="0" value="5" id="inputM" onchange="recalculateTotals()" class="w-full text-center font-bold bg-white border border-slate-300 rounded py-0.5 mt-1"/>
+                  </div>
+                  <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                    <span class="block text-[10px] text-slate-500 font-bold">L</span>
+                    <input type="number" min="0" value="5" id="inputL" onchange="recalculateTotals()" class="w-full text-center font-bold bg-white border border-slate-300 rounded py-0.5 mt-1"/>
+                  </div>
+                  <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                    <span class="block text-[10px] text-slate-500 font-bold">XL</span>
+                    <input type="number" min="0" value="3" id="inputXL" onchange="recalculateTotals()" class="w-full text-center font-bold bg-white border border-slate-300 rounded py-0.5 mt-1"/>
+                  </div>
+                  <div class="p-1.5 bg-slate-50 rounded border border-slate-200">
+                    <span class="block text-[10px] text-slate-500 font-bold">2XL</span>
+                    <input type="number" min="0" value="0" id="input2XL" onchange="recalculateTotals()" class="w-full text-center font-bold bg-white border border-slate-300 rounded py-0.5 mt-1"/>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. UPLOADED DESIGN ATTACHMENTS & PLACED VECTOR GRAPHICS -->
+        <div class="bg-white rounded-2xl border border-[#DFD9CC] p-5 sm:p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#DFD9CC]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-[#111417] text-white flex items-center justify-center text-xs font-bold">02</span>
+              <h3 class="font-head text-base sm:text-lg font-bold uppercase text-[#111417]">Design Attachments &amp; Placements (<span id="attachmentsCount">0</span>)</h3>
+            </div>
+            <span class="text-xs text-[#6B675E]">Mapped directly to sublimation laser cut</span>
+          </div>
+
+          <div id="attachmentsListContainer" class="divide-y divide-slate-100 max-h-60 overflow-y-auto">
+            <!-- Dynamically populated from studioState -->
+          </div>
+        </div>
+
+        <!-- 3. ALL PRODUCTS FROM CART -->
+        <div class="bg-white rounded-2xl border border-[#DFD9CC] p-5 sm:p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#DFD9CC]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-lg bg-[#111417] text-white flex items-center justify-center text-xs font-bold">03</span>
+              <h3 class="font-head text-base sm:text-lg font-bold uppercase text-[#111417]">All Cart Products (<span id="cartProductsCount">3</span> Lines)</h3>
+            </div>
+            <span class="text-xs font-mono text-[#088395] font-bold">Bundled in Order File</span>
+          </div>
+
+          <div class="space-y-3" id="cartProductsList">
+            <!-- Line Item 1: Custom Garment -->
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-lg bg-[#088395]/10 text-[#088395] flex items-center justify-center font-bold text-lg">✨</span>
+                <div>
+                  <strong class="text-sm font-bold text-[#111417] block" id="cartCustomLineTitle">Apex Sublimated Compression Rashguard (LS)</strong>
+                  <span class="text-xs text-[#6B675E]">Custom Order Line • Size Breakdown [S:2, M:5, L:5, XL:3]</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#6B675E] block"><span id="cartCustomPieces">15</span> × $54.00</span>
+                <strong class="text-sm font-bold text-[#111417] font-mono" id="cartCustomSubtotal">$810.00</strong>
+              </div>
+            </div>
+
+            <!-- Line Item 2: Standard Rashguard -->
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[#088395] text-[26px]">fitness_center</span>
+                <div>
+                  <strong class="text-sm font-bold text-[#111417] block">Apex Stealth Compression Rashguard</strong>
+                  <span class="text-xs text-[#6B675E]">Size: L • Carbon Black • Standard Catalog</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#6B675E] block">1 × $58.00</span>
+                <strong class="text-sm font-bold text-[#111417] font-mono">$58.00</strong>
+              </div>
+            </div>
+
+            <!-- Line Item 3: Standard Shorts -->
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[#C9A86A] text-[26px]">sports_mma</span>
+                <div>
+                  <strong class="text-sm font-bold text-[#111417] block">Bangkok Retro Muay Thai Shorts</strong>
+                  <span class="text-xs text-[#6B675E]">Size: M • Black / Gold • Curved Slit</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-[#6B675E] block">2 × $45.00</span>
+                <strong class="text-sm font-bold text-[#111417] font-mono">$90.00</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Order Summary & Athlete Delivery Information (5 Columns) -->
+      <div class="lg:col-span-5 space-y-6">
+
+        <!-- 4. ORDER FILE SUMMARY & FINANCIAL BREAKDOWN -->
+        <div class="bg-white rounded-2xl border border-[#DFD9CC] p-5 sm:p-6 shadow-sm space-y-5 sticky top-28">
+          <div class="flex items-center justify-between pb-3.5 border-b border-[#DFD9CC]">
+            <h3 class="font-head text-base sm:text-lg font-bold uppercase text-[#111417]">Order File Summary</h3>
+            <span id="zamIdPill" class="px-2.5 py-1 rounded-lg bg-[#111417] text-[#088395] font-mono text-xs font-bold">ZAM-415-26</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="flex justify-between text-[#6B675E]">
+              <span>Customized Garment Units</span>
+              <strong class="text-[#111417] font-mono" id="summaryCustomUnits">15 pcs</strong>
+            </div>
+            <div class="flex justify-between text-[#6B675E]">
+              <span>Standard Catalog Products</span>
+              <strong class="text-[#111417] font-mono">3 pcs</strong>
+            </div>
+            <div class="flex justify-between text-[#6B675E]">
+              <span>Total Garment Pieces</span>
+              <strong class="text-[#111417] font-mono" id="summaryTotalPieces">18 pcs</strong>
+            </div>
+            <div class="flex justify-between text-[#6B675E]">
+              <span>Production Window</span>
+              <strong class="text-[#111417]">14–21 Days (Atelier Batch 43)</strong>
+            </div>
+            <div class="flex justify-between text-[#6B675E]">
+              <span>Worldwide Express Shipping</span>
+              <strong class="text-emerald-700 font-bold">FREE (Orders > $250)</strong>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200 space-y-2">
+              <div class="flex justify-between items-center text-sm">
+                <span class="font-bold text-[#111417]">Estimated Order Total</span>
+                <strong class="font-head text-xl font-bold text-[#111417]" id="summaryGrandTotal">$958.00</strong>
+              </div>
+              <div class="flex justify-between items-center p-3 rounded-xl bg-[#DDF3F6] border border-[#088395]/30">
+                <div>
+                  <span class="text-[11px] font-mono uppercase text-[#066c7b] font-bold block">50% Milestone Deposit</span>
+                  <span class="text-[10px] text-[#066c7b]">Due on invoice approval</span>
+                </div>
+                <strong class="font-head text-xl font-bold text-[#088395]" id="summaryDeposit">$479.00</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ATHLETE / ACADEMY DELIVERY INFORMATION FORM -->
+          <div class="pt-4 border-t border-slate-200 space-y-3.5">
+            <h4 class="font-head text-xs uppercase font-bold text-[#111417] tracking-wider">Athlete / Academy Delivery Details</h4>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-[#111417] mb-1">Academy / Team Name *</label>
+              <input type="text" id="custAcademyName" value="Apex BJJ Academy" class="w-full bg-[#F4F1EA] px-3.5 py-2 rounded-lg border border-[#DFD9CC] text-xs font-bold text-[#111417] focus:bg-white focus:border-[#088395] outline-none transition-all"/>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-[#111417] mb-1">Email Address *</label>
+                <input type="email" id="custEmail" value="coach@apexbjj.com" class="w-full bg-[#F4F1EA] px-3.5 py-2 rounded-lg border border-[#DFD9CC] text-xs font-bold text-[#111417] focus:bg-white focus:border-[#088395] outline-none transition-all"/>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase text-[#111417] mb-1">Phone / WhatsApp *</label>
+                <input type="tel" id="custPhone" value="+1 (555) 234-5678" class="w-full bg-[#F4F1EA] px-3.5 py-2 rounded-lg border border-[#DFD9CC] text-xs font-bold text-[#111417] focus:bg-white focus:border-[#088395] outline-none transition-all"/>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-[#111417] mb-1">Delivery Address &amp; Country *</label>
+              <input type="text" id="custAddress" value="142 Combat Way, Suite 4, San Diego, CA, USA" class="w-full bg-[#F4F1EA] px-3.5 py-2 rounded-lg border border-[#DFD9CC] text-xs font-bold text-[#111417] focus:bg-white focus:border-[#088395] outline-none transition-all"/>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-[#111417] mb-1">Production Notes &amp; Target Deadline</label>
+              <textarea id="custNotes" rows="2" class="w-full bg-[#F4F1EA] p-2.5 rounded-lg border border-[#DFD9CC] text-xs text-[#111417] focus:bg-white focus:border-[#088395] outline-none transition-all" placeholder="e.g. IBJJF Pan Ams Delivery by end of next month."></textarea>
+            </div>
+          </div>
+
+          <!-- CONFIRM ORDER BUTTON -->
+          <div class="pt-2">
+            <button id="btnConfirmFinalOrder" onclick="executeFinalOrderConfirmation()" class="w-full py-4 rounded-xl bg-[#088395] hover:bg-[#066c7b] text-white font-head text-sm uppercase font-bold tracking-wider shadow-lg shadow-[#088395]/25 flex items-center justify-center gap-2.5 transition-all group">
+              <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">verified</span>
+              <span>Confirm &amp; Lock Order File</span>
+            </button>
+            <p class="text-[11px] text-center text-[#6B675E] mt-2">
+              🔒 Generates permanent ZAM-ID &amp; queues files for factory vector pre-flight.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Success Modal (Appears after Confirm Order) -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl border border-[#DFD9CC] p-6 sm:p-8 text-center space-y-5">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center shadow-inner">
+        <span class="material-symbols-outlined text-[36px]">check_circle</span>
+      </div>
+
+      <div>
+        <span class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 font-mono text-xs font-bold uppercase">Order File Registered</span>
+        <h3 class="font-head text-2xl font-bold text-[#111417] uppercase mt-2">Order Confirmed!</h3>
+        <p class="text-xs sm:text-sm text-[#6B675E] mt-1">Your order file bundling custom 3D patterns, vector attachments, and cart products has been successfully registered in the ZamForward system.</p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-[#F4F1EA] border border-[#DFD9CC] space-y-2 text-left text-xs">
+        <div class="flex justify-between">
+          <span class="text-[#6B675E]">Official Order ID:</span>
+          <strong class="font-mono text-base text-[#088395]" id="confirmedOrderId">ZAM-415-26</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#6B675E]">Total Pieces:</span>
+          <strong class="text-[#111417]" id="confirmedPieces">18 Garments</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#6B675E]">50% Milestone Deposit:</span>
+          <strong class="text-[#088395] font-bold" id="confirmedDeposit">$479.00</strong>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <a href="/" class="flex-1 py-3 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-bold uppercase transition-colors">
+          Return to Storefront
+        </a>
+        <a href="/#staff" onclick="sessionStorage.setItem('open_staff_drawer','1'); window.location.href='/'; return false;" class="flex-1 py-3 rounded-xl bg-[#088395] hover:bg-[#066c7b] text-white text-xs font-bold uppercase transition-colors shadow-md">
+          View Staff Queue →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Script -->
+  <script>
+    let currentZAMId = 'ZAM-415-26';
+    let currentUnitPrice = 54.0;
+    let savedStudioState = null;
+
+    // Load State from localStorage
+    function loadSavedOrderData() {
+      try {
+        const raw = localStorage.getItem('zam_order_file_state');
+        if (raw) {
+          savedStudioState = JSON.parse(raw);
+        }
+      } catch(e) {}
+
+      // Fetch Next ZAM ID from API
+      fetch('/api/orders/next-id')
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.next_order_id) {
+            currentZAMId = data.next_order_id;
+            document.getElementById('headerZamId').innerText = currentZAMId;
+            document.getElementById('zamIdPill').innerText = currentZAMId;
+          }
+        })
+        .catch(() => {});
+
+      if (savedStudioState) {
+        // Populate custom design fields
+        const isShorts = savedStudioState.garmentType === 'shorts';
+        currentUnitPrice = isShorts ? 48.0 : 54.0;
+
+        const title = isShorts ? 'Apex Combat Flex-Split MMA Fight Shorts' :
+          (savedStudioState.garmentType === 'rashguard_ss' ? 'Apex Short-Sleeve Sublimation Rashguard (SS)' : 'Apex Long-Sleeve Sublimation Rashguard (LS)');
+        
+        document.getElementById('garmentTitleDisplay').innerText = title;
+        document.getElementById('cartCustomLineTitle').innerText = title;
+
+        if (savedStudioState.snapshotData) {
+          document.getElementById('patternSnapshotImg').src = savedStudioState.snapshotData;
+        }
+
+        // Swatches
+        if (savedStudioState.fabricColor) {
+          document.getElementById('fabricColorSwatch').style.backgroundColor = savedStudioState.fabricColor;
+          document.getElementById('fabricColorText').innerText = savedStudioState.fabricColor;
+        }
+        if (savedStudioState.sleeveColor) {
+          document.getElementById('sleeveColorSwatch').style.backgroundColor = savedStudioState.sleeveColor;
+          document.getElementById('sleeveColorText').innerText = savedStudioState.sleeveColor;
+        }
+        if (savedStudioState.stitchColor) {
+          document.getElementById('stitchColorSwatch').style.backgroundColor = savedStudioState.stitchColor;
+          document.getElementById('stitchColorText').innerText = savedStudioState.stitchColor;
+        }
+
+        // Attachments
+        renderAttachmentsList(savedStudioState.elements || []);
+      }
+
+      recalculateTotals();
+    }
+
+    function renderAttachmentsList(elements) {
+      const container = document.getElementById('attachmentsListContainer');
+      const countEl = document.getElementById('attachmentsCount');
+      if (!container) return;
+
+      if (!elements || elements.length === 0) {
+        container.innerHTML = `<div class="p-4 text-center text-xs text-[#6B675E]">No vector attachments placed. Clean CorelDraw cut pattern will be produced.</div>`;
+        if (countEl) countEl.innerText = '0';
+        return;
+      }
+
+      if (countEl) countEl.innerText = elements.length;
+      container.innerHTML = elements.map(el => {
+        let zone = 'Front Chest';
+        if (el.y < 120) zone = 'Collar / Waistband';
+        else if (el.x > 650) zone = el.y > 300 ? 'Right Sleeve' : 'Left Sleeve';
+        else if (el.x > 400) zone = 'Back Center';
+        else if (el.y > 300) zone = 'Lower Torso';
+
+        const isWord = el.type === 'text';
+        return `
+          <div class="flex items-center justify-between py-2.5 px-3 hover:bg-slate-50 transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center text-xs font-bold text-[#088395]">
+                ${isWord ? 'T' : '★'}
+              </span>
+              <div>
+                <strong class="text-xs font-bold text-[#111417] block">${el.name || (isWord ? el.text : 'Graphic Asset')}</strong>
+                <span class="text-[10px] text-[#6B675E]">Zone: <b>${zone}</b> • Scale: ${Math.round((el.scale || 1) * 100)}%</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[10px] uppercase font-bold">${isWord ? 'Wordmark' : 'Vector Symbol'}</span>
+              <span class="w-3.5 h-3.5 rounded-full border border-slate-300" style="background-color: ${el.color || '#C9A86A'}"></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function recalculateTotals() {
+      const s = parseInt(document.getElementById('inputS')?.value || 0, 10);
+      const m = parseInt(document.getElementById('inputM')?.value || 0, 10);
+      const l = parseInt(document.getElementById('inputL')?.value || 0, 10);
+      const xl = parseInt(document.getElementById('inputXL')?.value || 0, 10);
+      const xxl = parseInt(document.getElementById('input2XL')?.value || 0, 10);
+
+      const customQty = Math.max(1, s + m + l + xl + xxl);
+      const customSubtotal = customQty * currentUnitPrice;
+
+      document.getElementById('customTotalPieces').innerText = customQty;
+      document.getElementById('cartCustomPieces').innerText = customQty;
+      document.getElementById('cartCustomSubtotal').innerText = `$${customSubtotal.toFixed(2)}`;
+
+      const standardCartTotal = 148.0; // 1x $58 + 2x $45
+      const grandTotal = customSubtotal + standardCartTotal;
+      const deposit = grandTotal * 0.50;
+
+      document.getElementById('summaryCustomUnits').innerText = `${customQty} pcs`;
+      document.getElementById('summaryTotalPieces').innerText = `${customQty + 3} pcs`;
+      document.getElementById('summaryGrandTotal').innerText = `$${grandTotal.toFixed(2)}`;
+      document.getElementById('summaryDeposit').innerText = `$${deposit.toFixed(2)}`;
+    }
+
+    async function executeFinalOrderConfirmation() {
+      const btn = document.getElementById('btnConfirmFinalOrder');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined text-[20px] animate-spin">refresh</span><span>Submitting Order File...</span>`;
+
+      const custName = document.getElementById('custAcademyName')?.value.trim() || 'Apex BJJ Academy';
+      const custEmail = document.getElementById('custEmail')?.value.trim() || 'coach@apexbjj.com';
+      const custPhone = document.getElementById('custPhone')?.value.trim() || '+1 (555) 234-5678';
+      const custAddress = document.getElementById('custAddress')?.value.trim() || '142 Combat Way, Suite 4, San Diego, CA, USA';
+      const custNotes = document.getElementById('custNotes')?.value.trim() || '';
+
+      const s = parseInt(document.getElementById('inputS')?.value || 0, 10);
+      const m = parseInt(document.getElementById('inputM')?.value || 0, 10);
+      const l = parseInt(document.getElementById('inputL')?.value || 0, 10);
+      const xl = parseInt(document.getElementById('inputXL')?.value || 0, 10);
+      const xxl = parseInt(document.getElementById('input2XL')?.value || 0, 10);
+      const customQty = Math.max(1, s + m + l + xl + xxl);
+
+      const payload = {
+        customer_name: custName,
+        customer_email: custEmail,
+        customer_phone: custPhone,
+        notes: `Delivery Address: ${custAddress}. Target / Notes: ${custNotes}`,
+        items: [
+          {
+            product_id: 1,
+            product_name: document.getElementById('garmentTitleDisplay').innerText,
+            quantity: customQty,
+            size: `Breakdown [S:${s}, M:${m}, L:${l}, XL:${xl}, 2XL:${xxl}]`,
+            color: document.getElementById('fabricColorText').innerText,
+            unit_price: currentUnitPrice,
+            design_config: savedStudioState || {}
+          },
+          {
+            product_id: 1,
+            product_name: 'Apex Stealth Compression Rashguard',
+            quantity: 1,
+            size: 'L',
+            color: 'Carbon Black',
+            unit_price: 58.0,
+            design_config: { type: 'standard_catalog' }
+          },
+          {
+            product_id: 2,
+            product_name: 'Bangkok Retro Muay Thai Shorts',
+            quantity: 2,
+            size: 'M',
+            color: 'Black / Gold',
+            unit_price: 45.0,
+            design_config: { type: 'standard_catalog' }
+          }
+        ]
+      };
+
+      try {
+        const res = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        const finalId = data.order_number || currentZAMId;
+        const finalDeposit = data.deposit_required || (customQty * currentUnitPrice + 148) * 0.5;
+
+        document.getElementById('confirmedOrderId').innerText = finalId;
+        document.getElementById('confirmedPieces').innerText = `${customQty + 3} Garments`;
+        document.getElementById('confirmedDeposit').innerText = `$${finalDeposit.toFixed(2)}`;
+        
+        document.getElementById('orderSuccessModal').classList.remove('hidden');
+      } catch(err) {
+        // Offline demo fallback
+        document.getElementById('confirmedOrderId').innerText = currentZAMId;
+        document.getElementById('confirmedPieces').innerText = `${customQty + 3} Garments`;
+        document.getElementById('confirmedDeposit').innerText = document.getElementById('summaryDeposit').innerText;
+        document.getElementById('orderSuccessModal').classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">verified</span><span>Confirm &amp; Lock Order File</span>`;
+      }
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', loadSavedOrderData);
+  </script>
+
+</body>
+</html>
+"""
+
+with open('public/order-file.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("Created public/order-file.html successfully!")

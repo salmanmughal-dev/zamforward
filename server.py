@@ -149,6 +149,18 @@ def get_order_detail(order_number):
     conn.close()
     return jsonify(order_dict)
 
+@app.route('/api/orders/next-id', methods=['GET'])
+def get_next_order_id():
+    conn = get_db_connection()
+    last_row = conn.execute("SELECT id FROM orders ORDER BY id DESC LIMIT 1").fetchone()
+    next_seq = 400 + (last_row['id'] + 1 if last_row else 1)
+    current_year_suffix = datetime.now().strftime('%y')
+    conn.close()
+    return jsonify({
+        'next_order_id': f"ZAM-{next_seq}-{current_year_suffix}",
+        'next_sequence': next_seq
+    })
+
 @app.route('/api/orders', methods=['POST'])
 def create_order():
     """
@@ -423,6 +435,10 @@ def get_stats():
     })
 
 # ----------------- MAIN LANDING PAGE ----------------- #
+
+@app.route('/order-file')
+def order_file():
+    return send_from_directory('public', 'order-file.html')
 
 @app.route('/')
 def index():
