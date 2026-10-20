@@ -1,0 +1,7 @@
+import sys, io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+with open('public/index.html', 'r', encoding='utf-8') as f:
+    html = f.read()
+
+print(html[158100:158800])
